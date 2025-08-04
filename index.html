@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I LOVE YOU BUBU 💖</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: url('https://images.unsplash.com/photo-1585842484283-44b3b2f70791') repeat;
+        background-size: cover;
+        font-family: 'Brush Script MT', cursive;
+        color: white;
+        overflow-x: hidden;
+        text-align: center;
+    }
+    .login-panel {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px pink;
+        text-align: center;
+        backdrop-filter: blur(10px);
+    }
+    input {
+        padding: 10px;
+        margin: 5px;
+        border-radius: 10px;
+        border: none;
+        text-align: center;
+    }
+    button {
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: none;
+        background: pink;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .dashboard {
+        display: none;
+        padding: 20px;
+        animation: fadeIn 2s ease-in-out;
+    }
+    .love-text {
+        font-size: 60px;
+        color: pink;
+        text-shadow: 2px 2px 10px red;
+        animation: glow 2s infinite alternate;
+    }
+    @keyframes glow {
+        from { text-shadow: 2px 2px 10px red; }
+        to { text-shadow: 4px 4px 20px hotpink; }
+    }
+    .scrolling-story {
+        height: 400px;
+        overflow: hidden;
+        position: relative;
+        background: rgba(255,255,255,0.8);
+        border-radius: 10px;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+    }
+    .scrolling-text {
+        position: absolute;
+        width: 100%;
+        top: 100%;
+        color: black;
+        font-size: 22px;
+        line-height: 1.5;
+        text-align: left;
+    }
+    @keyframes scrollUp {
+        0% { top: 100%; }
+        100% { top: -500%; }
+    }
+    .hearts {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        top: 0;
+        left: 0;
+    }
+    .heart {
+        position: absolute;
+        color: red;
+        animation: floatUp 5s linear infinite;
+        font-size: 24px;
+    }
+    @keyframes floatUp {
+        0% { transform: translateY(100vh) scale(1); opacity: 1; }
+        100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+    }
+    .gallery img {
+        border-radius: 15px;
+        max-width: 200px;
+        margin: 10px;
+        box-shadow: 0 0 15px rgba(255, 192, 203, 0.6);
+        transition: transform 0.3s;
+    }
+    .gallery img:hover {
+        transform: scale(1.1);
+    }
+</style>
+</head>
+<body>
+<div class="login-panel" id="login">
+    <h2>💖 Login to Mr & Mrs Kasundi Story 💖</h2>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
+</div>
+<div class="dashboard" id="dashboard">
+    <audio id="bgMusic" loop>
+        <source src="thousand_years.mp3" type="audio/mpeg">
+    </audio>
+    <div class="love-text">I LOVE YOU BUBU ❤️❤️❤️</div>
+    <h3 style="color:black;">🌸 Our Story - Mr & Mrs Kasundi 🌸</h3>
+    <button onclick="startStory()" style="background: red; padding: 10px 20px; border: none; border-radius: 10px; color: white; font-size: 18px; margin-bottom: 15px; cursor: pointer;">My Love ❤️</button>
+    <div class="scrolling-story">
+        <div class="scrolling-text" id="storyText">
+📖 The Love Story of Mr. & Mrs. Kasundi<br><br>
+In the quiet corridors of his school life, long before he realized how drastically his heart could change, Mr. Kasundi’s life took a turn in a single, unexpected moment.<br><br>
+It wasn’t a grand meeting. There were no fireworks in the sky, no cinematic slow motion. It was simpler than that — almost unreal in its simplicity.<br><br>
+One lazy afternoon, his friend Naksh was scrolling through his phone. Mr. Kasundi, not particularly paying attention, caught a fleeting glimpse of a photograph. Her photograph.<br><br>
+For a moment, the world fell silent. His gaze fixed on her face — Mrs. Kasundi, though she wasn’t his yet. Her eyes had a kind of light he couldn’t explain, her smile was just… different. It was as though the picture itself spoke.<br>
+He didn’t know her. He didn’t even know her name. But his heart had already whispered the truth: This is her. This is the one.<br><br>
+🌸 The Silent Years & The Growing Bond<br>
+Days turned into months, and although they were connected through a thread of mutual acquaintances, Mr. Kasundi stayed silent. His nature was quieter, more observant — the type who would rather listen than talk. Mrs. Kasundi, on the other hand, was the complete opposite — vibrant, lively, full of words and life.<br><br>
+They crossed paths in small ways, conversations started, little interactions began to weave into something meaningful. He started noticing the little things about her — how she laughed with her whole heart, how she spoke about the world with passion, how she made everyone around her feel warm and alive.<br><br>
+Over time, their conversations became their own world. What started as small talk grew into late-night calls, endless teasing, and their famous playful arguments over “Who loves whom more.”<br><br>
+💌 The Confessions & The First Steps of Love<br>
+It wasn’t sudden when they confessed their love — but it also wasn’t delayed. It came naturally, like rain after a long summer. By the time he told her, both of them knew it already.<br><br>
+She teased him about being quiet and overthinking everything.<br>
+He teased her about talking non-stop.<br><br>
+The names came next — her calling him Gunda, kharoos, idiot; him calling her Gundi, chota Kasturi, gadha. And beneath all the jokes, their bond deepened in ways only they understood.<br><br>
+❤️ The Firsts That Defined Them<br>
+The awkward hug on June 24, 2025 — a moment that was shy, nervous, but unforgettable.<br>
+Their first lip kiss — a soft, hesitant promise of forever.<br>
+Their first French kiss & make-out — moments filled with passion, but also deep emotion, the kind that made them sure this wasn’t just attraction; it was home.<br>
+Forehead kisses over the phone — their signature way of saying “I’m here, always.”<br><br>
+⚡ The Fights, The Misunderstandings & The Strength<br>
+Like any great love story, theirs had storms. Misunderstandings came like uninvited guests. Sometimes it hurt, sometimes it felt like the world was tilting.<br><br>
+But here’s what made them different: every misunderstanding was followed by re-understanding. They learned each other more deeply with every fight. Every time they drifted apart, they found their way back — stronger, more certain that this was forever.<br><br>
+💍 The Proposal & The Engagement<br>
+By now, Mr. Kasundi was sure — there was no other ending to this story except marriage. On February 14th, under the guise of a normal day, he surprised her with his heart in his hands.<br>
+She laughed, cried, teased him, called him pagal, but her eyes sparkled with the same certainty he had felt since the first time he saw her picture.<br>
+They got engaged that day.<br><br>
+💒 The Marriage — Mr. & Mrs. Kasundi Forever<br>
+From that moment, it was only a countdown to the day they would become officially Mr. & Mrs. Kasundi.<br><br>
+Their wedding wasn’t just an event; it was the celebration of a journey — from a picture on a phone screen to holding hands at the altar. Every inside joke, every fight, every forehead kiss, every playful “I love you more” had led to this moment.<br><br>
+As they stood together, husband and wife, Mr. Kasundi looked at her and thought about the boy who once saw her picture and fell in love without knowing her name.<br>
+Now, she wasn’t just a picture.<br>
+She was his life, his wife, his soulmate, his forever koala. ❤️
+        </div>
+    </div>
+    <h3 style="color:black;">📸 Our Memories</h3>
+    <div class="gallery">
+        <img src="photo1.jpg">
+        <img src="photo2.jpg">
+        <img src="photo3.jpg">
+        <img src="photo4.jpg">
+        <img src="photo5.jpg">
+        <img src="photo6.jpg">
+        <img src="photo7.jpg">
+        <img src="photo8.jpg">
+        <img src="photo9.jpg">
+        <img src="photo10.jpg">
+    </div>
+</div>
+<div class="hearts" id="hearts"></div>
+<script>
+function login(){
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    if(u==='Buttercup' && p==='Kasundi'){
+        document.getElementById('login').style.display='none';
+        document.getElementById('dashboard').style.display='block';
+        startHearts();
+    } else {
+        alert('Wrong credentials! Try again ❤️');
+    }
+}
+function startHearts(){
+    const hearts = document.getElementById('hearts');
+    setInterval(()=>{
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random()*100 + 'vw';
+        heart.style.fontSize = Math.random()*20+20+'px';
+        hearts.appendChild(heart);
+        setTimeout(()=>heart.remove(),5000);
+    },300);
+}
+function startStory(){
+    document.getElementById('storyText').style.animation = 'scrollUp 180s linear forwards';
+    let music = document.getElementById('bgMusic');
+    music.volume = 0;
+    music.play().catch(()=>console.log("Autoplay blocked until user clicks"));
+    let fadeIn = setInterval(()=>{
+        if(music.volume < 0.5){
+            music.volume += 0.05;
+        } else {
+            clearInterval(fadeIn);
+        }
+    }, 300);
+}
+</script>
+</body>
+</html>
