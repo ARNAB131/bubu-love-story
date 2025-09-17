@@ -1,106 +1,301 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Photo Gallery</title>
-  <meta name="description" content="A fast, mobile-friendly photo gallery." />
-  <meta name="theme-color" content="#ffffff" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="My Photo Gallery" />
-  <meta property="og:description" content="A fast, mobile-friendly photo gallery." />
-  <meta property="og:image" content="photo1.jpg" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="My Photo Gallery" />
-  <meta name="twitter:description" content="A fast, mobile-friendly photo gallery." />
-  <meta name="twitter:image" content="photo1.jpg" />
-
-  <!-- Preload first image -->
-  <link rel="preload" as="image" href="photo1.jpg" />
-
-  <style>
-    :root { --bg: #0b0b0b; --fg:#f5f5f5; --muted:#a1a1a1; --card:#121212; }
-    * { box-sizing: border-box; }
-    html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); }
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial; line-height:1.5; }
-    header, footer, main { max-width:1100px; margin:0 auto; padding: 16px; }
-    header h1 { margin:0; font-size: clamp(1.5rem, 3vw, 2.25rem); }
-    header p { margin:.25rem 0 0; color:var(--muted); }
-
-    .grid { display:grid; gap:12px; padding-block: 8px 28px; }
-    @media (min-width:520px){ .grid { grid-template-columns: repeat(2, 1fr);} }
-    @media (min-width:840px){ .grid { grid-template-columns: repeat(3, 1fr);} }
-
-    figure { margin:0; border-radius:14px; overflow:hidden; background:var(--card); position:relative; }
-    img { display:block; width:100%; height:auto; aspect-ratio: 4 / 3; }
-    figcaption {
-      position:absolute; inset-inline:0; bottom:0;
-      padding:8px 12px; font-size:.9rem; color:#eaeaea;
-      background: linear-gradient(transparent, rgba(0,0,0,.55));
-    }
-
-    footer { color:var(--muted); font-size:.9rem; }
-    a { color:#8ab4ff; text-decoration:none; }
-    a:hover { text-decoration:underline; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stories • Offline</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#111111">
+<style>
+  :root{--bg:#0b0b0b;--fg:#f5f5f5;--muted:#a1a1a1;--card:#151515;--acc:#ff6b9a}
+  *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,Segoe UI,Roboto}
+  header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px;background:#0f0f0f;position:sticky;top:0;z-index:2;border-bottom:1px solid #222}
+  h1{margin:0;font-size:clamp(1.1rem,3vw,1.5rem)}
+  .btn{background:var(--acc);border:0;color:#fff;font-weight:600;padding:10px 14px;border-radius:10px;cursor:pointer}
+  .btn.alt{background:#2d2d2d;color:#fff}
+  .wrap{max-width:1100px;margin:0 auto;padding:12px 16px}
+  .grid{display:grid;gap:14px}
+  @media(min-width:680px){.grid{grid-template-columns:repeat(3,1fr)}}
+  .card{background:var(--card);border:1px solid #222;border-radius:16px;overflow:hidden}
+  .thumb{aspect-ratio:4/3;background:#111;display:block;width:100%;object-fit:cover}
+  .card h3{margin:10px 12px 0 12px;font-size:1rem}
+  .card p{margin:6px 12px 12px 12px;color:var(--muted);font-size:.9rem}
+  .empty{opacity:.7;text-align:center;padding:40px 10px;color:var(--muted)}
+  footer{color:var(--muted);font-size:.85rem;padding:24px 16px;text-align:center}
+  dialog{border:1px solid #333;background:#111;color:var(--fg);border-radius:14px;width:min(720px,96vw);padding:0}
+  .dlg-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #222}
+  .dlg-b{padding:12px 16px;display:grid;gap:10px}
+  label{font-size:.9rem;color:var(--muted)}
+  input[type="text"],textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #333;background:#0f0f0f;color:var(--fg)}
+  textarea{min-height:120px;resize:vertical}
+  .row{display:grid;gap:10px}
+  @media(min-width:560px){.row{grid-template-columns:1fr 1fr}}
+  .aud{position:fixed;left:16px;right:16px;bottom:16px;background:#101010;border:1px solid #222;border-radius:16px;padding:10px 12px;display:flex;align-items:center;gap:10px}
+  .aud progress{width:100%}
+  .pill{font-size:.8rem;color:#ddd;background:#222;padding:4px 8px;border-radius:999px;border:1px solid #333}
+</style>
 </head>
 <body>
-  <header>
-    <h1>My Photo Gallery</h1>
-    <p>A fast, mobile-friendly photo gallery.</p>
-  </header>
+<header>
+  <h1>Stories</h1>
+  <div>
+    <button class="btn alt" id="btnImport">Import</button>
+    <button class="btn" id="btnNew">New story</button>
+  </div>
+</header>
 
-  <main class="grid">
-    <!-- Images -->
-    <figure>
-      <img src="photo1.jpg" alt="Photo 1 gallery image" loading="lazy" />
-      <figcaption>Photo 1</figcaption>
-    </figure>
-    <figure>
-      <img src="photo2.jpg" alt="Photo 2 gallery image" loading="lazy" />
-      <figcaption>Photo 2</figcaption>
-    </figure>
-    <figure>
-      <img src="photo3.jpg" alt="Photo 3 gallery image" loading="lazy" />
-      <figcaption>Photo 3</figcaption>
-    </figure>
-    <figure>
-      <img src="photo4.jpg" alt="Photo 4 gallery image" loading="lazy" />
-      <figcaption>Photo 4</figcaption>
-    </figure>
-    <figure>
-      <img src="photo5.jpg" alt="Photo 5 gallery image" loading="lazy" />
-      <figcaption>Photo 5</figcaption>
-    </figure>
-    <figure>
-      <img src="photo6.jpg" alt="Photo 6 gallery image" loading="lazy" />
-      <figcaption>Photo 6</figcaption>
-    </figure>
-    <figure>
-      <img src="photo7.jpg" alt="Photo 7 gallery image" loading="lazy" />
-      <figcaption>Photo 7</figcaption>
-    </figure>
-    <figure>
-      <img src="photo8.jpg" alt="Photo 8 gallery image" loading="lazy" />
-      <figcaption>Photo 8</figcaption>
-    </figure>
-    <figure>
-      <img src="photo9.jpg" alt="Photo 9 gallery image" loading="lazy" />
-      <figcaption>Photo 9</figcaption>
-    </figure>
-    <figure>
-      <img src="photo10.jpg" alt="Photo 10 gallery image" loading="lazy" />
-      <figcaption>Photo 10</figcaption>
-    </figure>
-  </main>
+<div class="wrap">
+  <section id="dash" class="grid" aria-live="polite"></section>
+  <p id="empty" class="empty" hidden>No stories yet. Add one to begin.</p>
+</div>
 
-  <footer>
-    <span>© <span id="y"></span> • Built for fast load and good SEO.</span>
-    <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
-  </footer>
+<dialog id="dlg">
+  <form method="dialog">
+    <div class="dlg-h">
+      <strong>Create / Edit story</strong>
+      <button class="btn alt" value="close" type="submit">Close</button>
+    </div>
+    <div class="dlg-b">
+      <div class="row">
+        <div>
+          <label>Title</label>
+          <input id="title" type="text" placeholder="e.g. Mr & Mrs Kasundi">
+        </div>
+        <div>
+          <label>Cover photo</label>
+          <input id="cover" type="file" accept="image/*">
+        </div>
+      </div>
+      <div>
+        <label>Story text</label>
+        <textarea id="text" placeholder="Write your story…"></textarea>
+      </div>
+      <div class="row">
+        <div>
+          <label>Gallery photos (multi)</label>
+          <input id="photos" type="file" accept="image/*" multiple>
+        </div>
+        <div>
+          <label>Background song (mp3/m4a/ogg)</label>
+          <input id="song" type="file" accept="audio/*">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn alt" id="btnExport" type="button">Export all</button>
+        <button class="btn" id="btnSave" type="button">Save story</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<!-- Player -->
+<div class="aud" id="player" hidden>
+  <button class="btn alt" id="play">Play</button>
+  <progress id="prog" max="1" value="0"></progress>
+  <span id="now" class="pill">00:00</span>
+  <input id="vol" type="range" min="0" max="1" step="0.01" value="0.7" title="Volume">
+  <span id="track" class="pill">No song</span>
+</div>
+
+<footer>Offline-ready • Stored locally on your device</footer>
+
+<script>
+/* --------- PWA --------- */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
+/* --------- tiny IndexedDB helper --------- */
+const dbp = (name='storiesDB', store='stories') => new Promise((resolve,reject)=>{
+  const req = indexedDB.open(name,1);
+  req.onupgradeneeded = e => {
+    const db = e.target.result;
+    const s = db.createObjectStore(store,{keyPath:'id',autoIncrement:true});
+    s.createIndex('by_title','title');
+  };
+  req.onsuccess = e => resolve(e.target.result);
+  req.onerror = e => reject(e.target.error);
+});
+const tx = async (mode='readonly') => {
+  const db = await dbp(); return db.transaction('stories',mode).objectStore('stories');
+};
+const put = async (val) => new Promise(async (res,rej)=>{
+  const t = await tx('readwrite'); const r = t.put(val);
+  r.onsuccess = () => res(r.result); r.onerror = e => rej(e.target.error);
+});
+const all = async () => new Promise(async (res,rej)=>{
+  const t = await tx('readonly'); const r = t.getAll();
+  r.onsuccess = ()=>res(r.result||[]); r.onerror = e=>rej(e.target.error);
+});
+const del = async (id) => new Promise(async (res,rej)=>{
+  const t = await tx('readwrite'); const r = t.delete(id);
+  r.onsuccess = ()=>res(); r.onerror = e=>rej(e.target.error);
+});
+
+/* --------- DOM refs --------- */
+const dash = document.getElementById('dash');
+const empty = document.getElementById('empty');
+const dlg = document.getElementById('dlg');
+const fTitle = document.getElementById('title');
+const fCover = document.getElementById('cover');
+const fText  = document.getElementById('text');
+const fPhotos= document.getElementById('photos');
+const fSong  = document.getElementById('song');
+const btnNew = document.getElementById('btnNew');
+const btnSave= document.getElementById('btnSave');
+const btnExport=document.getElementById('btnExport');
+const btnImport=document.getElementById('btnImport');
+
+/* --------- Player --------- */
+const player = document.getElementById('player');
+const playBtn = document.getElementById('play');
+const prog = document.getElementById('prog');
+const now = document.getElementById('now');
+const vol = document.getElementById('vol');
+const track = document.getElementById('track');
+const audio = new Audio(); audio.loop = true; audio.preload='auto'; audio.volume = +vol.value;
+
+playBtn.onclick = ()=>{ if(audio.paused){ audio.play(); playBtn.textContent='Pause'; } else { audio.pause(); playBtn.textContent='Play'; } };
+audio.ontimeupdate = ()=>{ if(audio.duration){ prog.value = audio.currentTime / audio.duration; now.textContent = fmt(audio.currentTime); } };
+vol.oninput = ()=> audio.volume = +vol.value;
+function fmt(s){ s|=0; const m=(s/60)|0; const ss=(s%60).toString().padStart(2,'0'); return `${m}:${ss}`; }
+
+/* --------- UI actions --------- */
+btnNew.onclick = ()=>{ clearForm(); dlg.showModal(); };
+
+btnSave.onclick = async ()=>{
+  const title = fTitle.value.trim() || 'Untitled';
+  const text = fText.value.trim();
+  const cover = fCover.files[0] ? await blobToData(fCover.files[0]) : null;
+  const photos = [];
+  for (const file of fPhotos.files) photos.push(await blobToData(file));
+  const song = fSong.files[0] ? await blobToData(fSong.files[0]) : null;
+
+  const doc = { id: self._editing || undefined, title, text, cover, photos, song, created: Date.now() };
+  const id = await put(doc);
+  self._editing = undefined;
+  dlg.close();
+  render();
+};
+
+btnExport.onclick = async ()=>{
+  const data = await all();
+  const blob = new Blob([JSON.stringify({version:1,data},null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'stories-export.json'; a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+btnImport.onclick = async ()=>{
+  const inp = document.createElement('input'); inp.type='file'; inp.accept='application/json';
+  inp.onchange = async ()=>{
+    const file = inp.files[0]; if(!file) return;
+    const json = JSON.parse(await file.text());
+    if(json && Array.isArray(json.data)){
+      for(const s of json.data){ delete s.id; await put(s); }
+      render();
+    }
+  };
+  inp.click();
+};
+
+function clearForm(){
+  fTitle.value=''; fText.value=''; fCover.value=''; fPhotos.value=''; fSong.value='';
+}
+
+async function render(){
+  const items = await all();
+  dash.innerHTML = '';
+  if(!items.length){ empty.hidden=false; return; }
+  empty.hidden=true;
+
+  for(const s of items.sort((a,b)=>b.created-a.created)){
+    const card = document.createElement('article'); card.className='card';
+    const img = document.createElement('img'); img.className='thumb'; img.loading='lazy';
+    img.alt = s.title; img.src = s.cover || s.photos?.[0] || '';
+    card.appendChild(img);
+
+    const h3 = document.createElement('h3'); h3.textContent = s.title; card.appendChild(h3);
+    const p = document.createElement('p'); p.textContent = s.text ? s.text.slice(0,140)+(s.text.length>140?'…':'') : 'No description';
+    card.appendChild(p);
+
+    const bar = document.createElement('div'); bar.style.display='flex'; bar.style.gap='8px'; bar.style.padding='0 12px 12px';
+    const bOpen = mkBtn('Open', ()=> openStory(s));
+    const bEdit = mkBtn('Edit', ()=> { self._editing=s.id; loadToForm(s); dlg.showModal(); }, 'alt');
+    const bDel  = mkBtn('Delete', async ()=>{ if(confirm('Delete this story?')){ await del(s.id); render(); } }, 'alt');
+    bar.append(bOpen,bEdit,bDel); card.appendChild(bar);
+
+    dash.appendChild(card);
+  }
+}
+
+function mkBtn(txt,fn,alt){ const b=document.createElement('button'); b.className='btn'+(alt?' alt':''); b.textContent=txt; b.onclick=fn; return b; }
+
+function loadToForm(s){
+  fTitle.value = s.title||''; fText.value = s.text||'';
+  // files cannot be pre-filled by design
+}
+
+function openStory(s){
+  const page = window.open('','_blank');
+  page.document.write(`
+    <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>${escapeHtml(s.title)}</title>
+    <style>
+      body{margin:0;padding:0;background:#0b0b0b;color:#f5f5f5;font-family:system-ui}
+      header{padding:12px 16px;border-bottom:1px solid #222;background:#0f0f0f}
+      h1{margin:0;font-size:1.2rem}
+      .wrap{max-width:1000px;margin:0 auto;padding:12px 16px}
+      p{color:#bbb;white-space:pre-wrap}
+      .grid{display:grid;gap:10px}
+      @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}
+      img{width:100%;height:auto;border-radius:12px;background:#111}
+      .aud{position:sticky;bottom:0;background:#101010;border:1px solid #222;border-radius:12px;padding:10px;margin:12px 0;display:flex;align-items:center;gap:10px}
+      .btn{background:#ff6b9a;border:0;color:#fff;padding:8px 12px;border-radius:10px;cursor:pointer}
+      .pill{font-size:.8rem;color:#ddd;background:#222;padding:4px 8px;border-radius:999px;border:1px solid #333}
+      progress{width:100%}
+    </style></head><body>
+    <header><h1>${escapeHtml(s.title)}</h1></header>
+    <div class="wrap">
+      <p>${escapeHtml(s.text||'')}</p>
+      ${s.song ? `
+      <div class="aud">
+        <button id="play" class="btn">Play</button>
+        <progress id="prog" max="1" value="0"></progress>
+        <span id="now" class="pill">00:00</span>
+        <input id="vol" type="range" min="0" max="1" step="0.01" value="0.7">
+        <span class="pill">Loop</span>
+      </div>`:''}
+      <div class="grid">
+        ${(s.photos||[]).map(src=>`<img loading="lazy" src="${src}">`).join('')}
+      </div>
+    </div>
+    ${s.song ? `
+    <script>
+      const audio = new Audio(${JSON.stringify(s.song)}); audio.loop=true; audio.preload='auto';
+      const play = document.getElementById('play'); const prog=document.getElementById('prog');
+      const now=document.getElementById('now'); const vol=document.getElementById('vol'); audio.volume=+vol.value;
+      play.onclick=()=>{ if(audio.paused){ audio.play(); play.textContent='Pause'; } else { audio.pause(); play.textContent='Play'; } };
+      audio.ontimeupdate=()=>{ if(audio.duration){ prog.value=audio.currentTime/audio.duration; now.textContent=fmt(audio.currentTime); } };
+      vol.oninput=()=> audio.volume=+vol.value;
+      function fmt(s){ s|=0; const m=(s/60)|0; const ss=(s%60).toString().padStart(2,'0'); return m+':'+ss; }
+    </script>`:''}
+    </body></html>
+  `);
+  page.document.close();
+  // also set player at bottom of main app to this story's song
+  if(s.song){ audio.src = s.song; track.textContent = s.title; player.hidden = false; playBtn.textContent='Play'; }
+}
+
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[m]); }
+
+async function blobToData(file){
+  // store as data URL for simplicity and full offline use
+  return await new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); });
+}
+
+/* --------- init --------- */
+render();
+</script>
 </body>
 </html>
